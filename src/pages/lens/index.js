@@ -154,7 +154,7 @@ const Lens = () => {
 
   const preloadVideo = (video) => {
     if (video) {
-      video.preload = 'auto';
+      video.preload = "auto";
       video.load();
     }
   };
@@ -162,7 +162,7 @@ const Lens = () => {
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: '200px', // Start loading 200px before the video enters the viewport
+      rootMargin: "200px", // Start loading 200px before the video enters the viewport
       threshold: 0.1,
     };
 
@@ -175,7 +175,10 @@ const Lens = () => {
       });
     };
 
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    const observer = new IntersectionObserver(
+      observerCallback,
+      observerOptions
+    );
 
     videoRef.current.forEach((video, index) => {
       if (video) {
@@ -494,6 +497,7 @@ const Lens = () => {
               }}
             >
               <video
+                key={index}
                 // ref={videoRef}
                 ref={(el) => (videoRef.current[index] = el)}
                 src={short.video_details?.file_url}
@@ -506,7 +510,12 @@ const Lens = () => {
                 onEnded={stopInteraction}
                 playsInline
                 preload="auto"
-                style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                style={{
+                  display: isActive ? "block" : "none", // Hide inactive videos
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                }}
               />
             </div>
             <div
