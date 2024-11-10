@@ -107,6 +107,21 @@ const Lens = () => {
   const [viewCountSent, setViewCountSent] = useState(false);
   const [dragDistance, setDragDistance] = useState(0);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Prevent pull-to-refresh reload
+      window.addEventListener(
+        'touchmove',
+        (e) => {
+          if (e.touches[0].clientY > 0 && window.scrollY === 0) {
+            e.preventDefault();
+          }
+        },
+        { passive: false }
+      );
+    }
+  }, []);
+
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["shorts", otpRes?.user_id, [60]],
     queryFn: fetchShortsData,
