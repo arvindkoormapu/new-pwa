@@ -20,7 +20,7 @@ import "swiper/css/pagination";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { WhatsappShareButton } from "next-share";
-import ShareIcon from '@mui/icons-material/Share';
+import ShareIcon from "@mui/icons-material/Share";
 const fetchShortsData = async ({ pageParam = 0, queryKey }) => {
   const login_user_id = queryKey[1];
   const savedNewsfeeds = queryKey[2];
@@ -111,7 +111,7 @@ const Lens = () => {
     if (typeof window !== "undefined") {
       // Prevent pull-to-refresh reload
       window.addEventListener(
-        'touchmove',
+        "touchmove",
         (e) => {
           if (e.touches[0].clientY > 0 && window.scrollY === 0) {
             e.preventDefault();
@@ -134,6 +134,23 @@ const Lens = () => {
     [data]
   );
   const currentShort = allShorts[currentShortIndex];
+
+  useEffect(() => {
+    // Preload the next video when the current one is active
+    const preloadNextVideo = () => {
+      if (currentShortIndex < allShorts.length - 1) {
+        const nextVideo =
+          allShorts[currentShortIndex + 1]?.video_details?.file_url;
+        if (nextVideo) {
+          const videoElement = document.createElement("video");
+          videoElement.src = nextVideo;
+          videoElement.preload = "auto";
+        }
+      }
+    };
+
+    preloadNextVideo();
+  }, [currentShortIndex, allShorts]);
 
   useEffect(() => {
     if (currentShort) {
@@ -351,9 +368,12 @@ const Lens = () => {
               onClick={() => setChatAction(true)}
             />
           </IconButton>
-          <IconButton aria-label="share" onClick={() => setShowShareAction(true)}>
-  <ShareIcon fontSize="large" />
-</IconButton>
+          <IconButton
+            aria-label="share"
+            onClick={() => setShowShareAction(true)}
+          >
+            <ShareIcon fontSize="large" />
+          </IconButton>
           <IconButton aria-label="share on WhatsApp">
             <WhatsappShareButton url={""} title={storyTitle}>
               <WhatsAppIcon sx={{ color: "#00C853" }} />
