@@ -503,19 +503,19 @@ const Lens = () => {
                 }}
               /> */}
               <video
-          ref={(el) => (videoRef.current[index] = el)}
-          src={short.video_details?.file_url}
-          controls={false}
-          autoPlay={isActive}
-          loop
-          muted={isAudioMuted}
-          onPlay={handleInteraction}
-          onPause={stopInteraction}
-          onEnded={stopInteraction}
-          preload="auto"
-          playsInline
-          style={{ width: "100%", height: "100%", objectFit: "contain" }}
-        />
+                ref={(el) => (videoRef.current[index] = el)}
+                src={short.video_details?.file_url}
+                controls={false}
+                autoPlay={isActive}
+                loop
+                muted={isAudioMuted}
+                onPlay={handleInteraction}
+                onPause={stopInteraction}
+                onEnded={stopInteraction}
+                preload="auto"
+                playsInline
+                style={{ width: "100%", height: "100%", objectFit: "contain" }}
+              />
             </div>
             <div
               style={{
