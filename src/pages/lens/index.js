@@ -162,8 +162,8 @@ const Lens = () => {
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: "100px", // Start loading 200px before the video enters the viewport
-      threshold: 0.1,
+      rootMargin: "500px", // Start loading 200px before the video enters the viewport
+      threshold: 0,
     };
 
     const observerCallback = (entries) => {
