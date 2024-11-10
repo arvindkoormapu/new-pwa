@@ -83,7 +83,7 @@ const AudioPlayer = ({ audioUrl, isActive, isAudioMuted }) => {
 const Lens = () => {
   const startY = useRef(null);
   const timerRef = useRef(null);
-  const videoRef = useRef(null);
+  const videoRef = useRef([]);
   const previousShortId = useRef(null);
   const firstBoxRef = useRef(null);
   const otpRes = { user_id: 222 };
@@ -151,6 +151,43 @@ const Lens = () => {
 
     preloadNextVideo();
   }, [currentShortIndex, allShorts]);
+
+  const preloadVideo = (video) => {
+    if (video) {
+      video.preload = 'auto';
+      video.load();
+    }
+  };
+
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '200px', // Start loading 200px before the video enters the viewport
+      threshold: 0.1,
+    };
+
+    const observerCallback = (entries) => {
+      entries.forEach((entry) => {
+        const videoIndex = parseInt(entry.target.dataset.index, 10);
+        if (entry.isIntersecting && videoRef.current[videoIndex]) {
+          preloadVideo(videoRef.current[videoIndex]);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    videoRef.current.forEach((video, index) => {
+      if (video) {
+        video.dataset.index = index;
+        observer.observe(video);
+      }
+    });
+
+    return () => {
+      videoRef.current.forEach((video) => observer.unobserve(video));
+    };
+  }, []);
 
   useEffect(() => {
     if (currentShort) {
@@ -457,7 +494,8 @@ const Lens = () => {
               }}
             >
               <video
-                ref={videoRef}
+                // ref={videoRef}
+                ref={(el) => (videoRef.current[index] = el)}
                 src={short.video_details?.file_url}
                 controls={false}
                 autoPlay={isActive}
