@@ -145,15 +145,6 @@ const Lens = () => {
     }
   }, [currentShort]);
 
-  const handleConfirm = () => {
-    handleBlock();
-    setOpenDialog(false);
-  };
-
-  const handleCancel = () => {
-    setOpenDialog(false);
-  };
-
   const sendViewCount = () => {
     if (!viewCountSent) {
       setViewCountSent(true);
@@ -456,6 +447,7 @@ const Lens = () => {
                 onPause={stopInteraction}
                 onEnded={stopInteraction}
                 playsInline
+                preload="auto"
                 style={{ width: "100%", height: "100%", objectFit: "contain" }}
               />
             </div>
