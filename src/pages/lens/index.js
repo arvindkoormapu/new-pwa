@@ -148,7 +148,7 @@ const Lens = () => {
       rootMargin: "800px", // Load videos earlier when they are 800px from the viewport
       threshold: 0.1,
     };
-
+  
     const observerCallback = (entries) => {
       entries.forEach((entry) => {
         const videoIndex = parseInt(entry.target.dataset.index, 10);
@@ -157,20 +157,24 @@ const Lens = () => {
         }
       });
     };
-
+  
     const observer = new IntersectionObserver(observerCallback, observerOptions);
-
+  
     videoRef.current.forEach((video, index) => {
       if (video) {
         video.dataset.index = index;
         observer.observe(video);
       }
     });
-
+  
+    // Cleanup
     return () => {
-      videoRef.current.forEach((video) => observer.unobserve(video));
+      videoRef.current
+        .filter((video) => video) // Only unobserve elements that are defined
+        .forEach((video) => observer.unobserve(video));
     };
   }, [allShorts]);
+  
 
   useEffect(() => {
     if (currentShort) {
