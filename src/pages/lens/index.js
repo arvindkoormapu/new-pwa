@@ -135,22 +135,7 @@ const Lens = () => {
   );
   const currentShort = allShorts[currentShortIndex];
 
-  useEffect(() => {
-    // Preload the next video when the current one is active
-    const preloadNextVideo = () => {
-      if (currentShortIndex < allShorts.length - 1) {
-        const nextVideo =
-          allShorts[currentShortIndex + 1]?.video_details?.file_url;
-        if (nextVideo) {
-          const videoElement = document.createElement("video");
-          videoElement.src = nextVideo;
-          videoElement.preload = "auto";
-        }
-      }
-    };
 
-    preloadNextVideo();
-  }, [currentShortIndex, allShorts]);
 
   const preloadVideo = (video) => {
     if (video) {
