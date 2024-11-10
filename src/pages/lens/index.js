@@ -135,8 +135,6 @@ const Lens = () => {
   );
   const currentShort = allShorts[currentShortIndex];
 
-
-
   const preloadVideo = (video) => {
     if (video) {
       video.preload = "auto";
@@ -298,10 +296,12 @@ const Lens = () => {
   };
 
   const handlePlayPause = () => {
-    if (videoRef.current) {
-      isPlaying ? videoRef.current.pause() : videoRef.current.play();
-      setIsPlaying(!isPlaying);
+    if (isPlaying) {
+      videoRef.current[currentShortIndex].pause();
+    } else {
+      videoRef.current[currentShortIndex].play();
     }
+    setIsPlaying(!isPlaying);
   };
 
   const handleAudioMuteUnmute = () => setIsAudioMuted(!isAudioMuted);
@@ -481,7 +481,7 @@ const Lens = () => {
                 margin: "0 auto",
               }}
             >
-              <video
+              {/* <video
                 key={index}
                 // ref={videoRef}
                 ref={(el) => (videoRef.current[index] = el)}
@@ -501,7 +501,21 @@ const Lens = () => {
                   height: "100%",
                   objectFit: "contain",
                 }}
-              />
+              /> */}
+              <video
+          ref={(el) => (videoRef.current[index] = el)}
+          src={short.video_details?.file_url}
+          controls={false}
+          autoPlay={isActive}
+          loop
+          muted={isAudioMuted}
+          onPlay={handleInteraction}
+          onPause={stopInteraction}
+          onEnded={stopInteraction}
+          preload="auto"
+          playsInline
+          style={{ width: "100%", height: "100%", objectFit: "contain" }}
+        />
             </div>
             <div
               style={{
