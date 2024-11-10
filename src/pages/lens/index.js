@@ -145,8 +145,8 @@ const Lens = () => {
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: "500px", // Start loading 200px before the video enters the viewport
-      threshold: 0,
+      rootMargin: "800px", // Load videos earlier when they are 800px from the viewport
+      threshold: 0.1,
     };
 
     const observerCallback = (entries) => {
@@ -158,10 +158,7 @@ const Lens = () => {
       });
     };
 
-    const observer = new IntersectionObserver(
-      observerCallback,
-      observerOptions
-    );
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
 
     videoRef.current.forEach((video, index) => {
       if (video) {
@@ -173,7 +170,7 @@ const Lens = () => {
     return () => {
       videoRef.current.forEach((video) => observer.unobserve(video));
     };
-  }, []);
+  }, [allShorts]);
 
   useEffect(() => {
     if (currentShort) {
